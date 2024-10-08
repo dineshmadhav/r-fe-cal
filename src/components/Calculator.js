@@ -4,13 +4,28 @@ function Calculator() {
     const [input, setInput] = useState('');
     const [result, setResult] = useState(0);
     const [errorMessage, setErrorMessage] = useState('');
+    
+    const handleInputChange = (event) => {
+        setInput(event.target.value);
+        setResult(0);
+        setErrorMessage('');
+    };
 
+    const handleCalculate = () => {
+        try {
+            const sumOfNumbers = add(input);
+            setResult(sumOfNumbers);
+            setErrorMessage('');
+        } catch (error) {
+            setErrorMessage(error.message);
+        }
+    };
 
     return (
         <div>
             <h1>String Calculator</h1>
-            <input type="text" value={input} onChange={()=>{}} />
-            <button onClick={()=>{}}>Calculate</button>
+            <input type="text" placeholder='Enter string of numbers' value={input} onChange={handleInputChange} />
+            <button onClick={handleCalculate}>Calculate</button>
             <p>Result: {result}</p>
             <p>{errorMessage}</p>
         </div>
