@@ -4,7 +4,7 @@ function Calculator() {
     const [input, setInput] = useState('');
     const [result, setResult] = useState(0);
     const [errorMessage, setErrorMessage] = useState('');
-    
+
     const handleInputChange = (event) => {
         setInput(event.target.value);
         setResult(0);
@@ -22,11 +22,9 @@ function Calculator() {
     };
 
     const add = (numbers) => {
-        if (numbers === '') {
-            return 0;
-        }
+        if (numbers === '') return 0;
     
-    }
+      };
 
     return (
         <div>
