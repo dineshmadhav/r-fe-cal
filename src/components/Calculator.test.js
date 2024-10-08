@@ -28,4 +28,25 @@ describe('Renders Calculator component', () => {
         fireEvent.change(inputElement, { target: { value: '' } });
         expect(inputElement.value).toBe('');
     });
+
+    it('calls handleCalculate on button click', () => {
+        render(<Calculator />);
+        const handleCalculate = jest.fn();
+        
+        const button = screen.getByText('Calculate');
+        button.onclick = handleCalculate; 
+    
+        fireEvent.click(button);
+    
+        expect(handleCalculate).toHaveBeenCalled();
+      });
+
+      it('updates input value on change', () => {
+        act(() => {
+            render(<Calculator />);
+        });
+        const inputElement = screen.getByPlaceholderText('Enter string of numbers');
+        fireEvent.change(inputElement, { target: { value: '1,2,3' } });
+        expect(inputElement.value).toBe('1,2,3');
+    });
 });
