@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Calculator.css'
 
 function Calculator() {
     const [input, setInput] = useState('');
@@ -23,17 +24,32 @@ function Calculator() {
 
     const add = (numbers) => {
         if (numbers === '') return 0;
-        
-        return numbers;
-      };
+
+        const negativeNumbers = [];
+
+        const numArray = numbers.split(',').map(num => parseInt(num.trim(), 10));
+        let sumOfnumArray = numArray.reduce((sum, num) => sum + num);
+
+        numArray.forEach(num => {
+            if (num < 0) negativeNumbers.push(num);
+        });
+
+        if (negativeNumbers.length > 0) {
+            throw new Error(`negative numbers not allowed: ${negativeNumbers.join(', ')}`);
+        }
+
+        return sumOfnumArray;
+    };
 
     return (
-        <div>
+        <div className="cal-container">
             <h1>String Calculator</h1>
-            <input className='cal-input-elm' type="text" placeholder='Enter string of numbers' value={input} onChange={handleInputChange} />
+            <input className='cal-input' type="text" placeholder='Enter string of numbers' value={input} onChange={handleInputChange} />
             <button className='cal-button' onClick={handleCalculate}>Calculate</button>
-            <p>Result: {result}</p>
-            <p>{errorMessage}</p>
+            <p className="result">
+                <span style={{ paddingRight: '8px' }}>Result:</span>
+                <span data-testid="result" className='results-total'>{result}</span></p>
+            <p className="error-message">{errorMessage}</p>
         </div>
     );
 }
