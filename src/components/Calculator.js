@@ -21,11 +21,18 @@ function Calculator() {
         }
     };
 
+    const add = (numbers) => {
+        if (numbers === '') {
+            return 0;
+        }
+    
+    }
+
     return (
         <div>
             <h1>String Calculator</h1>
-            <input type="text" placeholder='Enter string of numbers' value={input} onChange={handleInputChange} />
-            <button onClick={handleCalculate}>Calculate</button>
+            <input className='cal-input-elm' type="text" placeholder='Enter string of numbers' value={input} onChange={handleInputChange} />
+            <button className='cal-button' onClick={handleCalculate}>Calculate</button>
             <p>Result: {result}</p>
             <p>{errorMessage}</p>
         </div>
