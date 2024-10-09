@@ -23,12 +23,14 @@ function Calculator() {
     };
 
     const add = (numbers) => {
-        if (numbers === '') return 0;
+        if (numbers === '' && numbers == null) return 0;
 
         const negativeNumbers = [];
-
-        const numArray = numbers.split(',').map(num => parseInt(num.trim(), 10));
-        let sumOfnumArray = numArray.reduce((sum, num) => sum + num);
+        const doubleSlash = '//';
+        numbers = numbers.replace(/\\n/g, '\n');
+        const delimiters = new RegExp(`[${doubleSlash},/;\n:. ']`);
+        const numArray = numbers.split(delimiters).map(num => parseInt(num));
+        let sumOfnumArray = numArray.reduce((sum, num) => sum + (isNaN(num) ? 0 : num),0);
 
         numArray.forEach(num => {
             if (num < 0) negativeNumbers.push(num);
@@ -48,7 +50,7 @@ function Calculator() {
             <button className='cal-button' onClick={handleCalculate}>Calculate</button>
             <p className="result">
                 <span style={{ paddingRight: '8px' }}>Result:</span>
-                <span data-testid="result" className='results-total'>{result}</span></p>
+                <span data-testid="result" className='results-total'>{isNaN(result) ? '0' : result.toString()}</span></p>
             <p className="error-message">{errorMessage}</p>
         </div>
     );
