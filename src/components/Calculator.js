@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import './Calculator.css'
+import './Calculator.css';
 
 function Calculator() {
     const [input, setInput] = useState('');
     const [result, setResult] = useState(0);
     const [errorMessage, setErrorMessage] = useState('');
+    const [delimiter, setDelimiter] = useState('');
 
     const handleInputChange = (event) => {
         setInput(event.target.value);
@@ -23,13 +24,23 @@ function Calculator() {
     };
 
     const add = (numbers) => {
-        if (numbers === '' && numbers == null) return 0;
-
+        if (numbers === '' || numbers == null) return 0;
         const negativeNumbers = [];
         const doubleSlash = '//';
         numbers = numbers.replace(/\\n/g, '\n');
-        const delimiters = new RegExp(`[${doubleSlash},/;\n:. ']`);
-        const numArray = numbers.split(delimiters).map(num => parseInt(num));
+        let newDelimiter = '';
+
+        if (numbers.includes('+')) {
+            newDelimiter = '+';
+        }else if (numbers.includes(';')) {
+            newDelimiter = ';';
+        } else if (numbers.includes(':')) {
+            newDelimiter = ':';
+        }
+        setDelimiter(newDelimiter);
+
+        const delimiters = new RegExp(`[${doubleSlash}${newDelimiter},/;\n:. ']`);
+        const numArray = numbers.split(delimiters).map(num => parseInt(num,10));
         let sumOfnumArray = numArray.reduce((sum, num) => sum + (isNaN(num) ? 0 : num),0);
 
         numArray.forEach(num => {
@@ -46,11 +57,22 @@ function Calculator() {
     return (
         <div className="cal-container">
             <h1>String Calculator</h1>
-            <input className='cal-input' type="text" placeholder='Enter string of numbers' value={input} onChange={handleInputChange} />
+            <input
+                className='cal-input'
+                type="text"
+                placeholder='Enter string of numbers'
+                value={input}
+                onChange={handleInputChange}
+            />
             <button className='cal-button' onClick={handleCalculate}>Calculate</button>
             <p className="result">
                 <span style={{ paddingRight: '8px' }}>Result:</span>
-                <span data-testid="result" className='results-total'>{isNaN(result) ? '0' : result.toString()}</span></p>
+                <span data-testid="result" className='results-total'>{isNaN(result) ? '0' : result.toString()}</span>
+            </p>
+            <p>
+                <span>Delimiter: </span>
+                <span data-testid="delimiter">{delimiter}</span>
+            </p>
             <p className="error-message">{errorMessage}</p>
         </div>
     );

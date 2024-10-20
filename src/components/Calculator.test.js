@@ -143,4 +143,32 @@ describe('Renders Calculator component', () => {
         expect(screen.getByText('negative numbers not allowed: -3, -5, -6')).toBeInTheDocument();
     });
 
+    it('Display the delimiter and the result for the input', async () =>{
+        act(() => {
+            render(<Calculator />);
+        });
+        const inputElement = screen.getByPlaceholderText('Enter string of numbers');
+        fireEvent.change(inputElement, { target: { value: '//+\n3+5' } });
+        const buttonElement = screen.getByRole('button');
+        fireEvent.click(buttonElement);
+        await waitFor(() => screen.getByTestId('result'));
+        expect(screen.getByText('8')).toBeInTheDocument();
+        await waitFor(() => screen.getByTestId('delimiter'));
+        expect(screen.getByText('+')).toBeInTheDocument();
+    });
+
+    it('Display the delimiter and the result for the input', async () =>{
+        act(() => {
+            render(<Calculator />);
+        });
+        const inputElement = screen.getByPlaceholderText('Enter string of numbers');
+        fireEvent.change(inputElement, { target: { value: '//;\n5;5' } });
+        const buttonElement = screen.getByRole('button');
+        fireEvent.click(buttonElement);
+        await waitFor(() => screen.getByTestId('result'));
+        expect(screen.getByText('10')).toBeInTheDocument();
+        await waitFor(() => screen.getByTestId('delimiter'));
+        expect(screen.getByText(';')).toBeInTheDocument();
+    });
+
 });
